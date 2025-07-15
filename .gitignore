@@ -1,0 +1,35 @@
+# Node.js
+node_modules/
+.env
+.env.local
+.DS_Store
+dist/
+build/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Vite
+client/.vite
+client/dist
+client/node_modules
+
+# React (CRA if used)
+client/build
+
+# Server
+server/node_modules
+server/.env
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Logs
+*.log
+
+# Optional VSCode configs
+.vscode/
+
+# Mac system files
+*.DS_Store
