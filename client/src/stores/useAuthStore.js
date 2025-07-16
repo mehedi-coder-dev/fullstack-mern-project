@@ -1,5 +1,5 @@
-import axios from "axios";
 import { create } from "zustand";
+import api from "../services/api"; // ✅ customized axios instance
 
 const useAuthStore = create((set) => ({
   user: null,
@@ -7,21 +7,27 @@ const useAuthStore = create((set) => ({
 
   login: async (email, password) => {
     try {
-      const res = await axios.post("/api/auth/login", { email, password });
+      const res = await api.post("/auth/login", { email, password });
       localStorage.setItem("token", res.data.token);
       set({ user: res.data.user, token: res.data.token });
       return { success: true };
     } catch (err) {
-      return { success: false, message: err.response?.data?.message || "Login failed" };
+      return {
+        success: false,
+        message: err.response?.data?.message || "Login failed",
+      };
     }
   },
 
   register: async (name, email, password) => {
     try {
-      await axios.post("/api/auth/register", { name, email, password });
+      await api.post("/auth/register", { name, email, password });
       return { success: true };
     } catch (err) {
-      return { success: false, message: err.response?.data?.message || "Register failed" };
+      return {
+        success: false,
+        message: err.response?.data?.message || "Register failed",
+      };
     }
   },
 
@@ -34,7 +40,7 @@ const useAuthStore = create((set) => ({
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
-      const res = await axios.get("/api/auth/me", {
+      const res = await api.get("/auth/me", {
         headers: { Authorization: `Bearer ${token}` },
       });
       set({ user: res.data });

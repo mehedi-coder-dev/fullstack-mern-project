@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import axios from 'axios'
+import api from '../services/api'
 import useAuthStore from '../stores/useAuthStore'
 
 export default function Dashboard() {
@@ -45,7 +45,7 @@ export default function Dashboard() {
 
   const fetchEvents = async () => {
     try {
-      const res = await axios.get('/api/events')
+      const res = await api.get('/events')
       setEvents(res.data.filter((ev) => ev.createdBy === user.id))
     } catch {
       alert('Error fetching your events')
@@ -60,12 +60,12 @@ export default function Dashboard() {
     e.preventDefault()
     try {
       if (editId) {
-        await axios.patch(`/api/events/${editId}`, form, {
+        await api.patch(`/events/${editId}`, form, {
           headers: { Authorization: `Bearer ${token}` },
         })
         alert('Event updated')
       } else {
-        await axios.post('/api/events', form, {
+        await api.post('/events', form, {
           headers: { Authorization: `Bearer ${token}` },
         })
         alert('Event created')

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import api from '../services/api'
 import useAuthStore from '../stores/useAuthStore'
 
 export default function EventDetail() {
@@ -10,7 +10,7 @@ export default function EventDetail() {
   const [event, setEvent] = useState(null)
 
   useEffect(() => {
-    axios.get(`/api/events/${id}`).then(res => setEvent(res.data))
+    api.get(`/events/${id}`).then(res => setEvent(res.data))
   }, [id])
 
   if (!event) return <p className="text-center mt-10">Loading...</p>
@@ -18,7 +18,7 @@ export default function EventDetail() {
   const handleDelete = async () => {
     if (!window.confirm('Are you sure you want to delete this event?')) return
     try {
-      await axios.delete(`/api/events/${id}`, {
+      await api.delete(`/events/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       alert('Event deleted')
